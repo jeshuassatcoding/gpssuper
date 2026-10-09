@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>GPSSUPER</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#e9e9e9;color:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif}
+.phone{max-width:520px;min-height:100vh;margin:0 auto;background:#f7f7f7;overflow:hidden}
+.status{height:43px;padding:10px 17px 0;display:flex;justify-content:space-between;font-size:15px;font-weight:600}
+.nav{height:64px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #c8c8c8;position:relative;background:#f7f7f7}
+.nav strong{font-size:22px;font-weight:600}
+.back{position:absolute;left:16px;color:#1684e8;font-size:16px;display:none;background:none;border:0}
+.viewport{overflow:hidden;width:100%}.pages{display:flex;align-items:flex-start;width:200%;transform:translateX(0);transition:transform .32s cubic-bezier(.22,.75,.25,1)}.pages.show-countries{transform:translateX(-50%)}.page{width:50%;min-width:50%;padding-top:8px}.country-page{height:calc(100vh - 64px);overflow-y:auto;overscroll-behavior:contain}.list{padding-top:0}
+.item{width:100%;height:69px;border:0;border-bottom:1px solid #d0d0d0;background:transparent;display:flex;align-items:center;text-align:left;padding:0 18px 0 24px;font:20px -apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;color:#171717;cursor:pointer}
+.item:after{content:"›";font-size:32px;font-weight:200;color:#aaa;margin-left:auto}
+.item.selected{background:#e4f1ff}
+.item.selected:after{content:"✓";font-size:19px;color:#1684e8}
+.country-page{padding:0}
+.country-page .item{font-size:19px}
+.note{padding:16px 24px;color:#777;font-size:13px;text-align:center}
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="nav"><button class="back" id="back">‹ GPSSUPER</button><strong id="title">GPSSUPER</strong></div>
+  <div class="viewport"><div class="pages" id="pages"><div class="page" id="home">
+    <button class="item" id="choose">Choose Country</button>
+    <button class="item" id="current">GPS Country</button>
+  </div><div class="page country-page" id="countries">
+    <button class="item" data-country="Afghanistan">Afghanistan</button>
+    <button class="item" data-country="Albania">Albania</button>
+    <button class="item" data-country="Algeria">Algeria</button>
+    <button class="item" data-country="Argentina">Argentina</button>
+    <button class="item" data-country="Australia">Australia</button>
+    <button class="item" data-country="Austria">Austria</button>
+    <button class="item" data-country="Bangladesh">Bangladesh</button>
+    <button class="item" data-country="Belgium">Belgium</button>
+    <button class="item" data-country="Brazil">Brazil</button>
+    <button class="item" data-country="Canada">Canada</button>
+    <button class="item" data-country="Chile">Chile</button>
+    <button class="item" data-country="China">China</button>
+    <button class="item" data-country="Colombia">Colombia</button>
+    <button class="item" data-country="Croatia">Croatia</button>
+    <button class="item" data-country="Czechia">Czechia</button>
+    <button class="item" data-country="Denmark">Denmark</button>
+    <button class="item" data-country="Egypt">Egypt</button>
+    <button class="item" data-country="Finland">Finland</button>
+    <button class="item" data-country="France">France</button>
+    <button class="item" data-country="Germany">Germany</button>
+    <button class="item" data-country="Ghana">Ghana</button>
+    <button class="item" data-country="Greece">Greece</button>
+    <button class="item" data-country="India">India</button>
+    <button class="item" data-country="Indonesia">Indonesia</button>
+    <button class="item" data-country="Ireland">Ireland</button>
+    <button class="item" data-country="Israel">Israel</button>
+    <button class="item" data-country="Italy">Italy</button>
+    <button class="item" data-country="Japan">Japan</button>
+    <button class="item" data-country="Kenya">Kenya</button>
+    <button class="item" data-country="Malaysia">Malaysia</button>
+    <button class="item" data-country="Mexico">Mexico</button>
+    <button class="item" data-country="Morocco">Morocco</button>
+    <button class="item" data-country="Nepal">Nepal</button>
+    <button class="item" data-country="Netherlands">Netherlands</button>
+    <button class="item" data-country="New Zealand">New Zealand</button>
+    <button class="item" data-country="Nigeria">Nigeria</button>
+    <button class="item" data-country="Norway">Norway</button>
+    <button class="item" data-country="Pakistan">Pakistan</button>
+    <button class="item" data-country="Peru">Peru</button>
+    <button class="item" data-country="Philippines">Philippines</button>
+    <button class="item" data-country="Poland">Poland</button>
+    <button class="item" data-country="Portugal">Portugal</button>
+    <button class="item" data-country="Romania">Romania</button>
+    <button class="item" data-country="Saudi Arabia">Saudi Arabia</button>
+    <button class="item" data-country="Singapore">Singapore</button>
+    <button class="item" data-country="South Africa">South Africa</button>
+    <button class="item" data-country="South Korea">South Korea</button>
+    <button class="item" data-country="Spain">Spain</button>
+    <button class="item" data-country="Sweden">Sweden</button>
+    <button class="item" data-country="Switzerland">Switzerland</button>
+    <button class="item" data-country="Thailand">Thailand</button>
+    <button class="item" data-country="Turkey">Turkey</button>
+    <button class="item" data-country="Ukraine">Ukraine</button>
+    <button class="item" data-country="United Arab Emirates">United Arab Emirates</button>
+    <button class="item" data-country="United Kingdom">United Kingdom</button>
+    <button class="item" data-country="United States">United States</button>
+    <button class="item" data-country="Vietnam">Vietnam</button>
+    <div class="note">Select a country to use in this mockup</div>
+  </div></div>
+</div>
+<script>
+const pages=document.getElementById("pages"),title=document.getElementById("title"),back=document.getElementById("back"),current=document.getElementById("current");
+let selected="Not Set";
+function showCountries(){pages.classList.add("show-countries");title.textContent="Choose Country";back.style.display="block"}
+function showHome(){pages.classList.remove("show-countries");title.textContent="GPSSUPER";back.style.display="none";current.textContent="GPS Country — "+selected}
+document.getElementById("choose").addEventListener("click",showCountries);
+back.addEventListener("click",showHome);
+document.querySelectorAll("[data-country]").forEach(button=>button.addEventListener("click",()=>{
+selected=button.dataset.country;
+document.querySelectorAll("[data-country]").forEach(x=>x.classList.toggle("selected",x===button));
+showHome();
+}));
+current.addEventListener("click",showCountries);
+</script>
+</body>
+</html>
